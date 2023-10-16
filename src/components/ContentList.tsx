@@ -45,6 +45,11 @@ export default function ContentList({ place }: Props) {
   };
   return (
     <>
+      <CategoriesList
+        category={category}
+        setCategory={setCategory}
+        place={place}
+      />
       <div className="flex justify-end w-full mt-8 relative">
         <div
           className="rounded-3xl border-[0.5px] shadow-sm text-base flex justify-center items-center h-[44px] w-[150px] mb-4"
@@ -71,11 +76,6 @@ export default function ContentList({ place }: Props) {
           </div>
         )}
       </div>
-      <CategoriesList
-        category={category}
-        setCategory={setCategory}
-        place={place}
-      />
       {filteredItems && filteredItems[0] ? (
         <div className="w-full h-full grid grid-cols-3 gap-[12%] mt-20">
           {filteredItems.map((item: any, idx: number) => {
