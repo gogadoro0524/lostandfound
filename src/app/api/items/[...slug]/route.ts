@@ -10,6 +10,8 @@ export async function GET(_: NextRequest, context: Context) {
   console.log("api items - GET - slug?", slug);
 
   if (slug.length === 1) {
+    console.log(" api - mrc - items - slug?", slug);
+
     return getAllItems(slug[0])
       .then((res) => NextResponse.json(res))
       .catch((err) => console.log(err));

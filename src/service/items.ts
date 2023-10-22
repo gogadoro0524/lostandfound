@@ -16,6 +16,8 @@ likes,
 `;
 
 export const getAllItems = async (place: string) => {
+  console.log("place?", place);
+
   return client
     .fetch(
       `*[!(_id in path('drafts.**'))][_type == "items" && place._ref in *[_type == "place" && key == "${place}"]._id]{
@@ -27,15 +29,17 @@ export const getAllItems = async (place: string) => {
         "category" : category->title
       }|order(createdAt desc)`
     )
-    .then((data) =>
-      data.map((item: any) => {
+    .then((data) => {
+      console.log("req - getAllitems - items?", data);
+      const res = data.map((item: any) => {
         if (!item.image) {
           return item;
         } else {
           return { ...item, image: urlFor(item.image) };
         }
-      })
-    );
+      });
+      return res;
+    });
 };
 
 export const getItemById = async (itemId: string, placeKey: string) => {

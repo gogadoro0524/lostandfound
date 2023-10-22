@@ -28,19 +28,16 @@ export default function ItmeDetailPage({ params }: Props) {
     return fetch("/api/likes", {
       method: "PUT",
       body: JSON.stringify({ id: itemId }),
-    }).then(() => mutate(`/api/items/${placeKey}`));
+    }).then(() => mutate(`/api/items/${placeKey}/${itemId}`));
   };
 
   const { data, isLoading, error } = useSWR(`/api/items/${placeKey}/${itemId}`);
-
-  console.log("item?", data);
 
   if (!data) return;
   const { title, description, trait, image, author, likes, about, place } =
     data;
 
-  console.log(data);
-
+  console.log("item?", data);
   const handleLike = () => {
     console.log("click add like");
     addLike(itemId, placeKey);
