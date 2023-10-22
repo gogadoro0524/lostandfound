@@ -1,3 +1,4 @@
+import AudioList from "@/components/AudioList";
 import ContentList from "@/components/ContentList";
 import Header from "@/components/Header";
 
@@ -6,9 +7,9 @@ export default function SoundwolfPage() {
     <main className="flex flex-col mx-4 items-center h-screen">
       <Header />
       <div className="flex flex-col items-center w-[80%]">
-        <div className="font-bold text-[44px]">Soundwolf</div>
+        <div className="font-bold text-[44px] title">Soundwolf</div>
       </div>
-      <ContentList place="soundwolf" />
+      <AudioList place="soundwolf" />
     </main>
   );
 }

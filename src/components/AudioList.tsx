@@ -5,13 +5,12 @@ import Link from "next/link";
 import useSWR from "swr";
 import { CategoriesList } from "./CategoriesList";
 import { useState } from "react";
-import useItems from "@/hook/like";
 
 type Props = {
   place: string;
 };
 
-export default function ContentList({ place }: Props) {
+export default function AudioList({ place }: Props) {
   const [currentCategory, setCurrentCategory] = useState("All");
   const [filterPopup, setFilterPopup] = useState(false);
 
@@ -26,11 +25,11 @@ export default function ContentList({ place }: Props) {
     },
   ];
 
-  const { items, isLoading, error } = useItems(
-    currentFilter === 0
-      ? `/api/items/${place}/recent`
-      : `/api/items/${place}/popular`
-  );
+  const {
+    data: items,
+    isLoading,
+    error,
+  } = useSWR(currentFilter === 0 ? `/api/audio/recent` : `/api/audio/popular`);
 
   const filteredItems =
     currentCategory === "All"
@@ -56,15 +55,10 @@ export default function ContentList({ place }: Props) {
     setFilterPopup(false);
   };
 
+  console.log("audio list init - data?", items);
+
   return (
     <>
-      {!(place === "soundwolf") && (
-        <CategoriesList
-          category={currentCategory}
-          setCategory={setCurrentCategory}
-          place={place}
-        />
-      )}
       <div className="flex justify-end w-full mt-8 relative">
         <div
           className="rounded-3xl border-[0.5px] shadow-sm text-base flex justify-center items-center h-[44px] w-[150px] mb-4"
@@ -94,19 +88,14 @@ export default function ContentList({ place }: Props) {
       {filteredItems && filteredItems[0] ? (
         <div className="w-full h-full grid grid-cols-3 gap-[12%] mt-20">
           {filteredItems.map((item: any, idx: number) => {
-            const { id, title, image, categoryKey } = item;
+            const { id, title, placeKey } = item;
             return (
               <Link
-                href={`/${place}/${categoryKey}/${id}`}
-                className="rounded-lg aspect-[4/3] flex justify-center items-center shadow-md"
+                href={`/soundwolf/${id}`}
+                className="title rounded-lg aspect-[4/3] flex justify-center items-center shadow-md bg-neutral-50 text-neutral-400"
                 key={idx}
               >
-                <Image
-                  src={image}
-                  alt={`image about ${title}`}
-                  width={200}
-                  height={200}
-                />
+                {title}
               </Link>
             );
           })}

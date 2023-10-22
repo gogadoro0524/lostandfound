@@ -2,12 +2,12 @@ import { getAllCategories } from "@/service/categories";
 import { NextRequest, NextResponse } from "next/server";
 
 type Context = {
-  params: { id: string };
+  params: { category: string };
 };
 
 export async function GET(_: NextRequest, context: Context) {
-  const { id } = context.params;
-  console.log("api - get - categories - id?", id);
+  const { category } = context.params;
+  console.log("api/categories init");
 
-  return getAllCategories(id).then((res) => NextResponse.json(res));
+  return getAllCategories(category).then((res) => NextResponse.json(res));
 }

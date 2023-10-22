@@ -12,10 +12,10 @@ likes,
 "trait": category->trait,
 "about": place->about,
 "place": place->title,
-"other": *[_type == "category" ] 
+"others" [],
 `;
 
-export const getAllItems = async (place: string) => {
+export const getAllRecentItems = async (place: string) => {
   console.log("place?", place);
 
   return client
@@ -26,11 +26,10 @@ export const getAllItems = async (place: string) => {
         "image" : photo,
         title,
         "createdAt": _createdAt,
-        "category" : category->title
+        "categoryKey" : category->key,
       }|order(createdAt desc)`
     )
     .then((data) => {
-      console.log("req - getAllitems - items?", data);
       const res = data.map((item: any) => {
         if (!item.image) {
           return item;
@@ -42,33 +41,84 @@ export const getAllItems = async (place: string) => {
     });
 };
 
-export const getItemById = async (itemId: string, placeKey: string) => {
-  console.log("req - get item by ID, itemId?", itemId);
+export const getAllPopularItems = async (place: string) => {
+  console.log("req - popular - place?", place);
 
   return client
     .fetch(
-      `*[!(_id in path('drafts.**'))][_type == "items" && _id == "${itemId}"]{
-      ${simpleContentProjection}}`
+      `*[!(_id in path('drafts.**'))][_type == "items" && place._ref in *[_type == "place" && key == "${place}"]._id]{
+        likes,
+        "id" : _id,
+        "image" : photo,
+        title,
+        "createdAt": _createdAt,
+        "categoryKey" : category->key,
+      }|order(likes desc)`
     )
     .then((data) => {
-      console.log("data check1 - res?", data);
-
-      const item = data[0];
-      if (!item.image) {
-        return item;
-      } else {
-        return { ...item, image: urlFor(item.image) };
-      }
-    })
-    .then((res) => {
-      console.log("data check - res?", res);
+      const res = data.map((item: any) => {
+        if (!item.image) {
+          return item;
+        } else {
+          return { ...item, image: urlFor(item.image) };
+        }
+      });
       return res;
     });
 };
 
-export const getItemsByCategory = async (categories: string) => {
+export const getItemById = async (itemId: string, categoryKey: string) => {
+  console.log(
+    "req - get item by ID, itemId?",
+    itemId,
+    "categoryKey?",
+    categoryKey
+  );
+
+  return client
+    .fetch(
+      `*[!(_id in path('drafts.**'))][_type == "items" && _id == "${itemId}"]{
+        "id" : _id,
+        "image" : photo,
+        title,
+        likes,
+        "category" : category->title,
+        "categoryKey" : category->key,
+        "createdAt": _createdAt,
+        "author": category->author,
+        "description": category->description,
+        "trait": category->trait,
+        "about": place->about,
+        "place": place->title,
+        "placeKey": place->key,
+        "other": *[_type == "items" && category._ref in *[_type =="categories" && key == "${categoryKey}"]._id]{
+          title,
+          "image" : photo,
+          "id" : _id,
+          "categoryKey": category->key,
+        },
+        }`
+    )
+    .then((data) => {
+      const item = data[0];
+      if (!item.image) {
+        return item;
+      } else {
+        const newOther = item.other.map((i: any) => {
+          return { ...i, image: urlFor(i.image) };
+        });
+        return { ...item, image: urlFor(item.image), other: newOther };
+      }
+    })
+    .then((res) => {
+      // console.log("data check - res?", res);
+      return res;
+    });
+};
+
+export const getItemsByCategory = async (categoryKey: string) => {
   return client.fetch(
-    `*[!(_id in path('drafts.**'))][_type == "items" && category.title ==${categories} ]`
+    `*[!(_id in path('drafts.**'))][_type == "items" && category.key ==${categoryKey} ]`
   );
 };
 

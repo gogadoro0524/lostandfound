@@ -1,3 +1,40 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "mon-trappist";
+  src: url("/font/MonTrappist-Black.woff2") format("woff2");
+  src: url("/font/MonTrappist-Black.woff") format("woff");
+  src: url("/font/MonTrappist-Black.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "acumin";
+  src: url("/font/Acumin Pro Black.");
+}
+
+body {
+  font-family: Helvetica, sans-serif;
+  overflow-x: hidden;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+.text-shadow {
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+}
+
+.title {
+  font-family: "mon-trappist", sans-serif;
+}
+
+.scroll-hide::-webkit-scrollbar {
+  width: 0;
+}
