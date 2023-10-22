@@ -11,3 +11,5 @@ export type FullItem = {
   about: string;
   place: string;
 };
+
+export type SimpleItem = {};

@@ -21,7 +21,7 @@ export const getAllRecentItems = async (place: string) => {
   return client
     .fetch(
       `*[!(_id in path('drafts.**'))][_type == "items" && place._ref in *[_type == "place" && key == "${place}"]._id]{
-        likes,
+        "likes" : coalesce(likes, 0),
         "id" : _id,
         "image" : photo,
         title,
@@ -47,7 +47,7 @@ export const getAllPopularItems = async (place: string) => {
   return client
     .fetch(
       `*[!(_id in path('drafts.**'))][_type == "items" && place._ref in *[_type == "place" && key == "${place}"]._id]{
-        likes,
+        "likes" : coalesce(likes, 0),
         "id" : _id,
         "image" : photo,
         title,
@@ -81,7 +81,7 @@ export const getItemById = async (itemId: string, categoryKey: string) => {
         "id" : _id,
         "image" : photo,
         title,
-        likes,
+        "likes" : coalesce(likes, 0),
         "category" : category->title,
         "categoryKey" : category->key,
         "createdAt": _createdAt,

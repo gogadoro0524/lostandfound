@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import useSWR, { mutate, useSWRConfig } from "swr";
 import { icons } from "@/intra/globalStyle";
-import { useState } from "react";
-import useItems from "@/hook/like";
+import { useEffect, useState } from "react";
+import useItems from "@/hook/item";
+import useItem from "@/hook/item";
 // import useDetailItem from "@/hook/items";
 // import useDetailItem from "@/hook/items";
 
@@ -21,17 +21,24 @@ export default function ItmePage({ params }: Props) {
   const itemId = params.slug[1];
   const [popTrait, setPopTrait] = useState(false);
   const [popAbout, setPopAbout] = useState(false);
+  const [clientLikes, setClientLikes] = useState(0);
 
   // 훅을 잘못만들었을 수도 있고
   // const { addItemLike } = useDetailItem(itemId, placeKey);
+  const { item, isLoading, error } = useItem(
+    `/api/item/${categoryKey}/${itemId}`
+  );
 
-  const { setLike } = useItems();
+  const { setLike } = useItem("");
 
-  const {
-    data: item,
-    isLoading,
-    error,
-  } = useSWR(`/api/item/${categoryKey}/${itemId}`);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    console.log("item page useEffect init");
+
+    if (item) {
+      setClientLikes(item.likes);
+    }
+  }, [item]);
   if (!item) return;
   const {
     title,
@@ -49,21 +56,23 @@ export default function ItmePage({ params }: Props) {
   const handleLike = () => {
     console.log("click add like");
     if (itemId) {
-      setLike(itemId);
+      setLike(itemId, item);
+      setClientLikes((prev) => prev + 1);
+      console.log("current likes?", clientLikes);
     }
   };
 
   console.log("detail item?", item, "likes?", likes);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col px-4 w-screen">
       <div className="flex py-4">
         <Link className=" text-[40px]" href={`/${placeKey}`}>
           {"<"}
         </Link>
       </div>
-      <div className="flex justify-center h-full">
-        <div className="h-[500px] w-[50%] shadow-md rounded-lg flex justify-center items-center">
+      <div className="md:flex justify-center h-full">
+        <div className="md:h-[500px] aspect-square md:w-[50%] shadow-md rounded-lg flex justify-center items-center">
           <Image
             src={image}
             alt={`image by ${title}`}
@@ -71,14 +80,14 @@ export default function ItmePage({ params }: Props) {
             height={200}
           />
         </div>
-        <div className="flex flex-col w-[50%] h-full pl-20 pr-6 py-4">
+        <div className="flex flex-col md:w-[50%] h-full md:pl-20 pr-6 py-4">
           <div className="flex w-full justify-end">
             <div className="flex">
               <div onClick={handleLike}>
                 <icons.HeartFillIcon />
               </div>
               <div className="ml-2 text-lg font-semibold">
-                {!likes ? "0" : likes}
+                {!likes ? "0" : clientLikes}
               </div>
             </div>
           </div>
@@ -96,7 +105,7 @@ export default function ItmePage({ params }: Props) {
               Description
             </div>
 
-            <div className="mt-2 text-neutral-700 text-[24px]">
+            <div className="mt-2 text-neutral-700 text-[20px]">
               {description}
             </div>
           </div>
@@ -132,7 +141,7 @@ export default function ItmePage({ params }: Props) {
       </div>
       <div className="flex flex-col mt-16">
         <h1 className="text-2xl font-bold">Related Items</h1>
-        <div className="w-full h-full grid grid-cols-6 gap-[12px] mt-8">
+        <div className="w-full h-full grid md:grid-cols-6 grid-cols-2 gap-[12px] mt-8">
           {other &&
             other.map((item: any, idx: number) => {
               return (

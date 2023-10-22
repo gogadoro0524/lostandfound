@@ -59,7 +59,7 @@ export default function AudioList({ place }: Props) {
 
   return (
     <>
-      <div className="flex justify-end w-full mt-8 relative">
+      <div className="flex justify-end w-full mt-8 relative md:px-8">
         <div
           className="rounded-3xl border-[0.5px] shadow-sm text-base flex justify-center items-center h-[44px] w-[150px] mb-4"
           onClick={() => setFilterPopup(!filterPopup)}
@@ -86,7 +86,7 @@ export default function AudioList({ place }: Props) {
         )}
       </div>
       {filteredItems && filteredItems[0] ? (
-        <div className="w-full h-full grid grid-cols-3 gap-[12%] mt-20">
+        <div className="w-full grid md:grid-cols-3 md:gap-[70px] gap-[16px] md:pt-20 pt-8 md:px-8 grid-cols-1">
           {filteredItems.map((item: any, idx: number) => {
             const { id, title, placeKey } = item;
             return (

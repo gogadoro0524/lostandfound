@@ -5,7 +5,7 @@ import Link from "next/link";
 import useSWR from "swr";
 import { CategoriesList } from "./CategoriesList";
 import { useState } from "react";
-import useItems from "@/hook/like";
+import useItems from "@/hook/item";
 
 type Props = {
   place: string;
@@ -14,7 +14,6 @@ type Props = {
 export default function ContentList({ place }: Props) {
   const [currentCategory, setCurrentCategory] = useState("All");
   const [filterPopup, setFilterPopup] = useState(false);
-
   const [currentFilter, setCurrentFilter] = useState(0);
 
   const filterOps = [
@@ -26,11 +25,17 @@ export default function ContentList({ place }: Props) {
     },
   ];
 
-  const { items, isLoading, error } = useItems(
+  const {
+    data: items,
+    isLoading,
+    error,
+  } = useSWR(
     currentFilter === 0
       ? `/api/items/${place}/recent`
       : `/api/items/${place}/popular`
   );
+
+  console.log("items?", items);
 
   const filteredItems =
     currentCategory === "All"
@@ -57,7 +62,7 @@ export default function ContentList({ place }: Props) {
   };
 
   return (
-    <>
+    <div className="md:px-8">
       {!(place === "soundwolf") && (
         <CategoriesList
           category={currentCategory}
@@ -92,7 +97,7 @@ export default function ContentList({ place }: Props) {
         )}
       </div>
       {filteredItems && filteredItems[0] ? (
-        <div className="w-full h-full grid grid-cols-3 gap-[12%] mt-20">
+        <div className="w-full h-full grid md:grid-cols-3 md:gap-[40px] gap-[16px] md:mt-20 mt-8 grid-cols-1">
           {filteredItems.map((item: any, idx: number) => {
             const { id, title, image, categoryKey } = item;
             return (
@@ -116,6 +121,6 @@ export default function ContentList({ place }: Props) {
           item이 비어 있습니다
         </div>
       )}
-    </>
+    </div>
   );
 }

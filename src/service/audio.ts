@@ -4,7 +4,7 @@ export async function getRecentAllAudio() {
   return client.fetch(`
   *[!(_id in path('drafts.**'))][_type == "audio"]{
     "id" : _id,
-    likes,
+    "likes" : coalesce(likes, 0),
     audio,
     title,
     "createdAt": _createdAt,
@@ -16,7 +16,7 @@ export async function getPopularAllAudio() {
   return client.fetch(
     `*[!(_id in path('drafts.**'))][_type == "audio"]{
       "id" : _id,
-      likes,
+      "likes" : coalesce(likes, 0),
       audio,
       title,
       "createdAt": _createdAt,
@@ -26,11 +26,13 @@ export async function getPopularAllAudio() {
 }
 
 export async function getAuidoById(id: string) {
+  console.log("req - getAudio - id?", id);
+
   return client.fetch(
     `*[!(_id in path('drafts.**'))][_type == "audio" && _id == "${id}"][0]{
       "id" : _id,
       author,
-      likes,
+      "likes" : coalesce(likes, 0),
       "audio": audio {
         asset-> {
           _ref,
@@ -42,6 +44,6 @@ export async function getAuidoById(id: string) {
       "createdAt": _createdAt,
       "placeKey" : place->key,
       "about" : place->about,
-    }|order(likes desc)`
+    }`
   );
 }

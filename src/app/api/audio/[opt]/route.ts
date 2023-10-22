@@ -1,4 +1,4 @@
-import { getPopularAllAudio, getRecentAllAudio } from "@/service/auido";
+import { getPopularAllAudio, getRecentAllAudio } from "@/service/audio";
 import { NextRequest, NextResponse } from "next/server";
 
 type Context = {

@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <SWRConfigContext>
-        <body className="mx-12">{children}</body>
+        <body>{children}</body>
       </SWRConfigContext>
     </html>
   );

@@ -20,6 +20,13 @@ const config: Config = {
         grey200: "#5E5E5E",
         text: "#4CEF13",
       },
+      screens: {
+        sm: "640px",
+        md: "500px", // md 브레이크포인트를 500px로 변경
+        lg: "1024px",
+        xl: "1280px",
+        "2xl": "1536px",
+      },
     },
   },
   plugins: [],

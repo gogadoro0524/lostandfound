@@ -1,10 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import useSWR, { mutate, useSWRConfig } from "swr";
 import { icons } from "@/intra/globalStyle";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import useItem from "@/hook/item";
 // import useDetailItem from "@/hook/items";
 // import useDetailItem from "@/hook/items";
 
@@ -17,12 +17,20 @@ type Props = {
 export default function ItmePage({ params }: Props) {
   console.log("item detail page init - params?", params);
   const itemId = params.id;
-  const { mutate } = useSWRConfig();
-  const [popTrait, setPopTrait] = useState(false);
   const [popAbout, setPopAbout] = useState(false);
-
+  const [clientLikes, setClientLikes] = useState(0);
   const [playing, setPlaying] = useState<boolean>(false);
   const audioRef = useRef<any>(null);
+  const { item, isLoading, error, setLike } = useItem(
+    `/api/audio/item/${itemId}`
+  );
+  useEffect(() => {
+    console.log("item page useEffect init");
+    window.scrollTo(0, 0);
+    if (item) {
+      setClientLikes(item.likes);
+    }
+  }, [item]);
 
   const togglePlay = () => {
     if (playing) {
@@ -35,36 +43,29 @@ export default function ItmePage({ params }: Props) {
   // 훅을 잘못만들었을 수도 있고
   // const { addItemLike } = useDetailItem(itemId, placeKey);
 
-  const addLike = async (itemId: string) => {
-    console.log("fetch - addlike init");
-
-    return fetch("/api/likes", {
-      method: "PUT",
-      body: JSON.stringify({ id: itemId }),
-    }).then(() => mutate(`/api/item/${itemId}`));
-  };
-
-  const { data: item, isLoading, error } = useSWR(`/api/audio/item/${itemId}`);
+  console.log("hi");
+  console.log("detail item?", item);
   if (!item) return;
   const { title, description, author, likes, about, placeKey, audio } = item;
 
   const handleLike = () => {
     console.log("click add like");
-    ``;
-    addLike(itemId);
+    if (itemId) {
+      setLike(itemId, item);
+      setClientLikes((prev) => prev + 1);
+      console.log("current likes?", clientLikes);
+    }
   };
 
-  console.log("detail item?", item, "likes?", likes);
-
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col w-screen px-4">
       <div className="flex py-4">
         <Link className=" text-[40px]" href={`/${placeKey}`}>
           {"<"}
         </Link>
       </div>
-      <div className="flex justify-center h-full">
-        <div className="h-[500px] w-[50%] shadow-md rounded-lg  justify-between items-center flex flex-col">
+      <div className="md:flex justify-center h-full">
+        <div className="md:h-[500px] aspect-square md:w-[50%] shadow-md rounded-lg  justify-between items-center flex flex-col">
           <div></div>
           <button onClick={togglePlay}>
             {playing ? (
@@ -84,7 +85,7 @@ export default function ItmePage({ params }: Props) {
             지원되지 않는 인터넷 입니다. 크롬 또는 사파리로 이용해주세요.
           </audio>
         </div>
-        <div className="flex flex-col w-[50%] h-full pl-20 pr-6 py-4">
+        <div className="flex flex-col md:w-[50%] h-full md:pl-20 pr-6 py-4">
           <div className="flex w-full justify-end">
             <div className="flex">
               <div onClick={handleLike}>
