@@ -65,7 +65,7 @@ export default function ItmePage({ params }: Props) {
         </Link>
       </div>
       <div className="md:flex justify-center h-full">
-        <div className="md:h-[500px] aspect-square md:w-[50%] shadow-md rounded-lg  justify-between items-center flex flex-col">
+        <div className="md:h-[500px] aspect-square md:w-[50%] shadow-md rounded-lg  justify-between items-center flex flex-col relative">
           <div></div>
           <button onClick={togglePlay}>
             {playing ? (
@@ -84,17 +84,24 @@ export default function ItmePage({ params }: Props) {
             <source src={audio.asset.url} type="audio/mpeg" />
             지원되지 않는 인터넷 입니다. 크롬 또는 사파리로 이용해주세요.
           </audio>
+          {likes >= 50 && (
+            <div className="absolute w-full title md:h-[500px] md:w-[50%] aspect-square bg-neutral-300 opacity-80 flex justify-center items-center md:text-[50px] text-neutral-700">
+              SOLD OUT
+            </div>
+          )}
         </div>
         <div className="flex flex-col md:w-[50%] h-full md:pl-20 pr-6 py-4">
           <div className="flex w-full justify-end">
-            <div className="flex">
-              <div onClick={handleLike}>
-                <icons.HeartFillIcon />
+            {likes < 50 && (
+              <div className="flex">
+                <div onClick={handleLike}>
+                  <icons.HeartFillIcon />
+                </div>
+                <div className="ml-2 text-lg font-semibold text-neutral-400">
+                  {!likes ? "0" : clientLikes >= 50 ? "SOLD OUT" : likes}
+                </div>
               </div>
-              <div className="ml-2 text-lg font-semibold">
-                {!likes ? "0" : likes}
-              </div>
-            </div>
+            )}
           </div>
           <div className="text-[#4CEF13] text-[37px] font-semibold ">
             {placeKey}
