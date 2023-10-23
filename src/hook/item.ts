@@ -9,8 +9,6 @@ async function updateLike(id: string) {
 }
 
 export default function useItem(url: string) {
-  console.log("hook - useItems - url?", url);
-
   const { data: item, isLoading, error, mutate } = useSWR(url);
 
   const setLike = (id: string, post: any) => {
@@ -18,7 +16,6 @@ export default function useItem(url: string) {
       ...post,
       likes: post.likes + 1,
     };
-    console.log("hook - setLike init", newItem);
 
     return mutate(updateLike(id), {
       optimisticData: newItem,

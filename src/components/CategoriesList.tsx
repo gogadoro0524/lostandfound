@@ -9,8 +9,6 @@ type Props = {
 export const CategoriesList = ({ category, setCategory, place }: Props) => {
   const { data, isLoading, error } = useSWR(`/api/categories/${place}`);
 
-  console.log("categories?", data);
-
   return (
     <div className="title flex flex-wrap font-semibold text-lg border-b-[3px] justify-center items-center border-neutral-700 md:pb-12 pb-6 md:text-[35px] text-[22px]">
       <div

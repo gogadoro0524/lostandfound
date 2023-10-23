@@ -16,7 +16,6 @@ type Props = {
 };
 
 export default function ItmePage({ params }: Props) {
-  console.log("item detail page init - params?", params);
   const categoryKey = params.slug[0];
   const itemId = params.slug[1];
   const [popTrait, setPopTrait] = useState(false);
@@ -33,7 +32,6 @@ export default function ItmePage({ params }: Props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log("item page useEffect init");
 
     if (item) {
       setClientLikes(item.likes);
@@ -54,15 +52,11 @@ export default function ItmePage({ params }: Props) {
   } = item;
 
   const handleLike = () => {
-    console.log("click add like");
     if (itemId) {
       setLike(itemId, item);
       setClientLikes((prev) => prev + 1);
-      console.log("current likes?", clientLikes);
     }
   };
-
-  console.log("detail item?", item, "likes?", likes);
 
   return (
     <div className="flex flex-col px-4 w-screen">

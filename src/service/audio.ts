@@ -26,8 +26,6 @@ export async function getPopularAllAudio() {
 }
 
 export async function getAuidoById(id: string) {
-  console.log("req - getAudio - id?", id);
-
   return client.fetch(
     `*[!(_id in path('drafts.**'))][_type == "audio" && _id == "${id}"][0]{
       "id" : _id,

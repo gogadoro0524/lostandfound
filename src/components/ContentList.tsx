@@ -35,8 +35,6 @@ export default function ContentList({ place }: Props) {
       : `/api/items/${place}/popular`
   );
 
-  console.log("items?", items);
-
   const filteredItems =
     currentCategory === "All"
       ? items

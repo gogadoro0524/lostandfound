@@ -16,8 +16,6 @@ likes,
 `;
 
 export const getAllRecentItems = async (place: string) => {
-  console.log("place?", place);
-
   return client
     .fetch(
       `*[!(_id in path('drafts.**'))][_type == "items" && place._ref in *[_type == "place" && key == "${place}"]._id]{
@@ -42,8 +40,6 @@ export const getAllRecentItems = async (place: string) => {
 };
 
 export const getAllPopularItems = async (place: string) => {
-  console.log("req - popular - place?", place);
-
   return client
     .fetch(
       `*[!(_id in path('drafts.**'))][_type == "items" && place._ref in *[_type == "place" && key == "${place}"]._id]{
@@ -68,13 +64,6 @@ export const getAllPopularItems = async (place: string) => {
 };
 
 export const getItemById = async (itemId: string, categoryKey: string) => {
-  console.log(
-    "req - get item by ID, itemId?",
-    itemId,
-    "categoryKey?",
-    categoryKey
-  );
-
   return client
     .fetch(
       `*[!(_id in path('drafts.**'))][_type == "items" && _id == "${itemId}"]{
@@ -111,7 +100,6 @@ export const getItemById = async (itemId: string, categoryKey: string) => {
       }
     })
     .then((res) => {
-      // console.log("data check - res?", res);
       return res;
     });
 };
@@ -123,7 +111,6 @@ export const getItemsByCategory = async (categoryKey: string) => {
 };
 
 export const addLikeRequest = async (id: string) => {
-  console.log("add like request init");
   try {
     return client
       .patch(id)

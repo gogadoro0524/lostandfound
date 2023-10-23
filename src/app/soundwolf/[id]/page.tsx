@@ -15,7 +15,6 @@ type Props = {
 };
 
 export default function ItmePage({ params }: Props) {
-  console.log("item detail page init - params?", params);
   const itemId = params.id;
   const [popAbout, setPopAbout] = useState(false);
   const [clientLikes, setClientLikes] = useState(0);
@@ -25,7 +24,6 @@ export default function ItmePage({ params }: Props) {
     `/api/audio/item/${itemId}`
   );
   useEffect(() => {
-    console.log("item page useEffect init");
     window.scrollTo(0, 0);
     if (item) {
       setClientLikes(item.likes);
@@ -43,17 +41,13 @@ export default function ItmePage({ params }: Props) {
   // 훅을 잘못만들었을 수도 있고
   // const { addItemLike } = useDetailItem(itemId, placeKey);
 
-  console.log("hi");
-  console.log("detail item?", item);
   if (!item) return;
   const { title, description, author, likes, about, placeKey, audio } = item;
 
   const handleLike = () => {
-    console.log("click add like");
     if (itemId) {
       setLike(itemId, item);
       setClientLikes((prev) => prev + 1);
-      console.log("current likes?", clientLikes);
     }
   };
 

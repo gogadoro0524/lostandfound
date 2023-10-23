@@ -10,16 +10,16 @@ export default function MenuPage() {
         <div className="text-[#1CB722] font-bold md:text-[25px] text-[18px">
           2023, The currently stored items are...
         </div>
-        <div className="mt-12">
+        <div className="mt-12 flex flex-col items-center">
           <Link href={`/mrc`}>
             <Image
-              src={"/mrc_menu.png"}
-              width={300}
-              height={300}
+              src={"/logo_mrc.png"}
+              width={80}
+              height={50}
               alt="mrc menu"
             />
           </Link>
-          <div className="mt-4">
+          <div className="mt-8">
             <Link href={"/soundwolf"}>
               <Image
                 src={"/soundwolf_menu.png"}

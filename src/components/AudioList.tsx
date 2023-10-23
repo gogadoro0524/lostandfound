@@ -55,8 +55,6 @@ export default function AudioList({ place }: Props) {
     setFilterPopup(false);
   };
 
-  console.log("audio list init - data?", items);
-
   return (
     <>
       <div className="flex justify-end w-full mt-8 relative md:px-8">

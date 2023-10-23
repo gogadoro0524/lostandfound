@@ -13,7 +13,6 @@ export default function SWRConfigContext({ children }: Props) {
         // 어디 경로로 갈것인지 받아오면
         fetcher: (url: string) =>
           fetch(url).then((res) => {
-            console.log("use swr");
             return res.json();
           }),
       }}
