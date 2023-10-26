@@ -154,7 +154,7 @@ export default function ItmePage({ params }: Props) {
             other.map((item: any, idx: number) => {
               return (
                 <Link
-                  href={`/item/${item.categoryKey}/${item.id}`}
+                  href={`/mrc/${item.categoryKey}/${item.id}`}
                   className="shadow-md flex justify-center aspect-square items-center"
                   key={idx}
                 >
