@@ -14,7 +14,7 @@ type Props = {
 export default function ContentList({ place }: Props) {
   const [currentCategory, setCurrentCategory] = useState("All");
   const [filterPopup, setFilterPopup] = useState(false);
-  const [currentFilter, setCurrentFilter] = useState(0);
+  const [currentFilter, setCurrentFilter] = useState("recent");
 
   const filterOps = [
     {
@@ -29,11 +29,7 @@ export default function ContentList({ place }: Props) {
     data: items,
     isLoading,
     error,
-  } = useSWR(
-    currentFilter === 0
-      ? `/api/items/${place}/recent`
-      : `/api/items/${place}/popular`
-  );
+  } = useSWR(`/api/items/${place}/${currentFilter}`);
 
   const filteredItems =
     currentCategory === "All"
@@ -41,21 +37,11 @@ export default function ContentList({ place }: Props) {
       : items.filter((item: any) => item.categoryKey === currentCategory);
 
   const filteringRecent = () => {
-    setCurrentFilter(0);
+    setCurrentFilter("recent");
     setFilterPopup(false);
   };
   const filteringPopular = () => {
-    setCurrentFilter(1);
-    setFilterPopup(false);
-  };
-
-  const handleFilter = () => {
-    if (currentFilter === 1) {
-      setCurrentFilter(0);
-    } else if (currentFilter === 0) {
-      setCurrentFilter(1);
-    }
-    // if e.target.title === popular ? 어쩌고 저쩌고
+    setCurrentFilter("popular");
     setFilterPopup(false);
   };
 
@@ -73,20 +59,20 @@ export default function ContentList({ place }: Props) {
           className="rounded-3xl border-[0.5px] shadow-sm text-base flex justify-center items-center h-[44px] w-[150px] mb-4"
           onClick={() => setFilterPopup(!filterPopup)}
         >
-          {filterOps[currentFilter].title}
+          {filterOps[0].title}
         </div>
         {filterPopup && (
           <div className="absolute top-[46px] w-[170px] h-[120px] flex flex-col border-[0.5px] border-neutral-100 bg-white shadow-md rounded-xl justify-center items-center">
             <div
               className={`text-base flex justify-center items-center h-[44px] w-[150px] rounded-3xl border-[0.5px]
-              ${currentFilter === 0 ? "bg-neutral-200" : ""}`}
+              ${currentFilter === "recent" ? "bg-neutral-200" : ""}`}
               onClick={filteringRecent}
             >
               {filterOps[0].title}
             </div>
             <div
               className={`text-base flex justify-center items-center h-[44px] w-[150px] rounded-3xl border-[0.5px] mt-2
-              ${currentFilter === 1 ? "bg-neutral-200" : ""}`}
+              ${currentFilter === "popular" ? "bg-neutral-200" : ""}`}
               onClick={filteringPopular}
             >
               {filterOps[1].title}
