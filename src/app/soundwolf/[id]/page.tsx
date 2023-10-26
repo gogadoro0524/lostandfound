@@ -92,7 +92,11 @@ export default function ItmePage({ params }: Props) {
                   <icons.HeartFillIcon />
                 </div>
                 <div className="ml-2 text-lg font-semibold text-neutral-400">
-                  {!likes ? "0" : clientLikes >= 50 ? "SOLD OUT" : likes}
+                  {likes === (0 || undefined)
+                    ? 0
+                    : clientLikes > 49
+                    ? "SOLD OUT"
+                    : clientLikes}
                 </div>
               </div>
             )}

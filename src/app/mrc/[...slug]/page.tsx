@@ -6,6 +6,7 @@ import { icons } from "@/intra/globalStyle";
 import { useEffect, useState } from "react";
 import useItems from "@/hook/item";
 import useItem from "@/hook/item";
+import { client } from "@/service/sanity";
 // import useDetailItem from "@/hook/items";
 // import useDetailItem from "@/hook/items";
 
@@ -52,6 +53,8 @@ export default function ItmePage({ params }: Props) {
   } = item;
 
   const handleLike = () => {
+    console.log("add like");
+
     if (itemId) {
       setLike(itemId, item);
       setClientLikes((prev) => prev + 1);
@@ -73,21 +76,25 @@ export default function ItmePage({ params }: Props) {
             width={200}
             height={200}
           />
-          {likes >= 50 && (
+          {clientLikes >= 50 && (
             <div className="absolute w-full text-[30px] title md:h-[500px] md:w-[50%] aspect-square bg-neutral-300 opacity-80 flex justify-center items-center md:text-[50px] text-neutral-700">
               SOLD OUT
             </div>
           )}
         </div>
         <div className="flex flex-col md:w-[50%] h-full md:pl-20 pr-6 py-4">
-          {likes < 50 && (
+          {clientLikes < 50 && (
             <div className="flex w-full justify-end">
               <div className="flex">
                 <div onClick={handleLike}>
                   <icons.HeartFillIcon />
                 </div>
                 <div className="ml-2 text-lg font-semibold text-neutral-400">
-                  {!likes ? "0" : clientLikes >= 50 ? "SOLD OUT" : likes}
+                  {likes === (0 || undefined)
+                    ? 0
+                    : clientLikes > 49
+                    ? "SOLD OUT"
+                    : clientLikes}
                 </div>
               </div>
             </div>
