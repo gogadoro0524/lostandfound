@@ -58,7 +58,7 @@ export default function ContentList({ place }: Props) {
           className="rounded-3xl border-[0.5px] shadow-sm text-base flex justify-center items-center h-[44px] w-[150px] mb-4"
           onClick={() => setFilterPopup(!filterPopup)}
         >
-          {filterOps[0].title}
+          {currentFilter === "popular" ? "Popular Items" : "Recent Items"}
         </div>
         {filterPopup && (
           <div className="absolute top-[46px] w-[170px] h-[120px] flex flex-col border-[0.5px] border-neutral-100 bg-white shadow-md rounded-xl justify-center items-center">
