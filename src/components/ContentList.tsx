@@ -5,7 +5,6 @@ import Link from "next/link";
 import useSWR from "swr";
 import { CategoriesList } from "./CategoriesList";
 import { useState } from "react";
-import useItems from "@/hook/item";
 
 type Props = {
   place: string;
