@@ -6,8 +6,8 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
   token: process.env.NEXT_PUBLIC_SANITY_SECRET_TOKEN,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
-  useCdn: false,
-  apiVersion: "2023-10-30",
+  useCdn: true,
+  apiVersion: "2023-11-04",
 });
 
 const builder = ImageUrlBuilder(client);
