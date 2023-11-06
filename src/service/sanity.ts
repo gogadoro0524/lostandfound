@@ -7,7 +7,7 @@ export const client = createClient({
   token: process.env.NEXT_PUBLIC_SANITY_SECRET_TOKEN,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET,
   useCdn: true,
-  apiVersion: "2023-11-04",
+  apiVersion: "2023-11-05",
 });
 
 const builder = ImageUrlBuilder(client);
